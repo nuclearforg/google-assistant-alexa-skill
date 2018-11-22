@@ -31,8 +31,7 @@ def normalize_audio_buffer(buf: bytes, volume_percentage: int, sample_width: int
     # Construct array from bytes based on sample_width, multiply by scale
     # and convert it back to bytes
     arr = array.array('h', buf)
-    for idx in range(0, len(arr)):
-        arr[idx] = int(arr[idx]*scale)
+    arr[:] = [int(x)*scale for x in arr]
     buf = arr.tostring()
     return buf
 
@@ -62,7 +61,9 @@ def get_credentials(handler_input: HandlerInput) -> Credentials:
 
 def get_device_id(handler_input: HandlerInput) -> str:
     amazon_device_id = handler_input.request_envelope.context.system.device.device_id
-    return hashlib.md5(amazon_device_id.encode('utf-8')).hexdigest()
+    h = hashlib.new('ripemd160')
+    h.update(amazon_device_id.encode('utf-8'))
+    return h.hexdigest()
 
 
 def get_persistent_attribute(handler_input: HandlerInput, key: str, default: object=None) -> object:
