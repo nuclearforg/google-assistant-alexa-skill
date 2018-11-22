@@ -1,13 +1,13 @@
 > :heavy_exclamation_mark: This skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted. (See [here][1])
 
-![Logo][logo-img]
-
 # Alexa integration with Google Assistant
 
 [![Codacy Badge][codacy-img]][codacy-link]
 [![Python: 3][python3-img]][python3-link]
 [![license][license-img]][license-link]
 [![Author Gayness][gayness-img]][gayness-link]
+
+![Logo][logo-img]
 
 ## THIS IS A WIP: STAY TUNED
 
