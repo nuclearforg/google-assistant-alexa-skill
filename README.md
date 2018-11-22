@@ -1,5 +1,7 @@
 > :heavy_exclamation_mark: This skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted. (See [here][1])
 
+![Logo][logo-img]
+
 # :crystal_ball: Alexa integration with Google Assistant
 
 ![Open Source Love][opensource-img]
@@ -23,6 +25,7 @@ See file [`LICENSE`][4] for further reference.
  [3]: https://github.com/tartanguru
  [4]: https://github.com/circhioz/google-assistant-alexa-skill/blob/master/LICENSE
 
+ [logo-img]: https://raw.githubusercontent.com/circhioz/google-assistant-alexa-skill/assets/logo.png
  [license-link]: https://opensource.org/licenses/Apache-2.0
  [license-img]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
  [opensource-img]: https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red.svg
