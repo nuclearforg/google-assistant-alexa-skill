@@ -6,6 +6,7 @@
 [![Python: 3][python3-img]][python3-link]
 [![license][license-img]][license-link]
 [![Author Gayness][gayness-img]][gayness-link]
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcirchioz%2Fgoogle-assistant-alexa-skill.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcirchioz%2Fgoogle-assistant-alexa-skill?ref=badge_shield)
 
 ![Logo][logo-img]
 
@@ -33,3 +34,6 @@ See file [`LICENSE`][4] for further reference.
  [gayness-img]: https://img.shields.io/badge/Author%20gayness-100%25-ff69b4.svg
  [codacy-link]: https://www.codacy.com/app/circhioz/google-assistant-alexa-skill?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=circhioz/google-assistant-alexa-skill&amp;utm_campaign=Badge_Grade
  [codacy-img]: https://api.codacy.com/project/badge/Grade/475d297827f842a7a72d3c8f405bad29
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcirchioz%2Fgoogle-assistant-alexa-skill.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcirchioz%2Fgoogle-assistant-alexa-skill?ref=badge_large)
