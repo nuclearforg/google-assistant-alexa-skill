@@ -10,9 +10,10 @@ from ask_sdk.standard import StandardSkillBuilder
 from ask_sdk_core.utils import is_intent_name, is_request_type
 from ask_sdk_model import Response
 
-import google_assistant
-from alexa import data, util
-from alexa.device_helpers import register_device, RegistrationError
+import assistant
+import skill_helpers
+import data
+from device_helpers import register_device, RegistrationError
 
 
 _logger = logging.getLogger(__name__)
@@ -27,11 +28,11 @@ def preflight_check(f: Callable) -> Callable:
         _logger.info('Pre-flight check')
 
         # Obtain credentials
-        credentials = util.get_credentials(handler_input)
+        credentials = skill_helpers.get_credentials(handler_input)
 
         # Obtain the deviceId
-        device_id = util.get_device_id(handler_input)
-        last_device_id = util.get_persistent_attribute(handler_input, 'device_id')
+        device_id = skill_helpers.get_device_id(handler_input)
+        last_device_id = skill_helpers.get_persistent_attribute(handler_input, 'device_id')
 
         project_id = data.GOOGLE_ASSISTANT_API['project_id']
         model_id = data.GOOGLE_ASSISTANT_API['model_id']
@@ -49,7 +50,7 @@ def preflight_check(f: Callable) -> Callable:
 
             _logger.info('Device was registered successfully')
 
-            util.set_persistent_attribute(handler_input, 'device_id', device_id, save=True)
+            skill_helpers.set_persistent_attribute(handler_input, 'device_id', device_id, save=True)
             _logger.info('New device_id was saved into persistent storage')
 
         return f(handler_input)
@@ -64,7 +65,7 @@ def launch_request_handler(handler_input: HandlerInput) -> Response:
     _logger.info('LaunchRequest')
     _: Callable = handler_input.attributes_manager.request_attributes["_"]
 
-    return google_assistant.assist(handler_input, _(data.HELLO))
+    return assistant.assist(handler_input, _(data.HELLO))
 
 
 @_sb.request_handler(can_handle_func=is_intent_name("SearchIntent"))
@@ -74,7 +75,7 @@ def search_intent_handler(handler_input: HandlerInput) -> Response:
     _logger.info('SearchIntent')
 
     alexa_utterance = handler_input.request_envelope.request.intent.slots['search'].value
-    return google_assistant.assist(handler_input, alexa_utterance)
+    return assistant.assist(handler_input, alexa_utterance)
 
 
 @_sb.request_handler(can_handle_func=is_request_type("SessionEndedRequest"))
