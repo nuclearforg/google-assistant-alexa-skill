@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import array
 import hashlib
 import logging
-import math
 
 from ask_sdk_core.handler_input import HandlerInput
 
@@ -11,37 +9,6 @@ from google.oauth2.credentials import Credentials
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.DEBUG)
-
-
-def normalize_audio_buffer(buf: bytes, volume_percentage: int, sample_width: int=2) -> bytes:
-    """Adjusts the loudness of the audio data in the given buffer.
-    Volume normalization is done by scaling the amplitude of the audio
-    in the buffer by a scale factor of 2^(volume_percentage/100)-1.
-    For example, 50% volume scales the amplitude by a factor of 0.414,
-    and 75% volume scales the amplitude by a factor of 0.681.
-    For now we only sample_width 2.
-    Args:
-      buf: byte string containing audio data to normalize.
-      volume_percentage: volume setting as an integer percentage (1-100).
-      sample_width: size of a single sample in bytes.
-    """
-    if sample_width != 2:
-        raise Exception('unsupported sample width:', sample_width)
-    scale = math.pow(2, 1.0*volume_percentage/100)-1
-    # Construct array from bytes based on sample_width, multiply by scale
-    # and convert it back to bytes
-    arr = array.array('h', buf)
-    arr[:] = [int(x)*scale for x in arr]
-    buf = arr.tostring()
-    return buf
-
-
-def align_buf(buf: bytes, sample_width: bytes):
-    """In case of buffer size not aligned to sample_width pad it with 0s"""
-    remainder = len(buf) % sample_width
-    if remainder != 0:
-        buf += b'\0' * (sample_width - remainder)
-    return buf
 
 
 def get_credentials(handler_input: HandlerInput) -> Credentials:

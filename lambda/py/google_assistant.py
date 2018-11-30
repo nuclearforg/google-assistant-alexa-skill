@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
 import logging
+import os
+import subprocess
+import wave
+from xml.sax.saxutils import escape
 
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model import Response, Request
 
+import boto3
+
 import grpc
+from ask_sdk_model.ui import SimpleCard
 from google.assistant.embedded.v1alpha2 import embedded_assistant_pb2_grpc, embedded_assistant_pb2
 from google.assistant.embedded.v1alpha2.embedded_assistant_pb2 import AssistRequest
 from google.auth.transport.grpc import secure_authorized_channel
@@ -22,6 +29,9 @@ _END_OF_UTTERANCE = embedded_assistant_pb2.AssistResponse.END_OF_UTTERANCE
 _DIALOG_FOLLOW_ON = embedded_assistant_pb2.DialogStateOut.DIALOG_FOLLOW_ON
 _CLOSE_MICROPHONE = embedded_assistant_pb2.DialogStateOut.CLOSE_MICROPHONE
 
+# Get the service client.
+_s3 = boto3.client('s3')
+
 
 def is_grpc_error_unavailable(e) -> bool:
     is_grpc_error = isinstance(e, grpc.RpcError)
@@ -29,6 +39,27 @@ def is_grpc_error_unavailable(e) -> bool:
         _logger.error('gRPC unavailable error: %s', e)
         return True
     return False
+
+
+def encode_from_pcm_to_mp3(input_path: str,
+                           output_path: str) -> None:
+    lame_path = os.environ['LAMBDA_TASK_ROOT'] + '/lame'
+
+    try:
+        lame_output = subprocess.check_output([lame_path, '-m', 'j', '-b', '48', input_path, output_path], shell=False)
+    except subprocess.CalledProcessError as e:
+        _logger.fatal('LAME error:\n' + e.output.decode('utf-8'))
+        raise e
+
+    _logger.debug('LAME output:' + lame_output.decode('utf-8'))
+
+
+def align_buf(buf: bytes, sample_width: int):
+    """In case of buffer size not aligned to sample_width pad it with 0s"""
+    remainder = len(buf) % sample_width
+    if remainder != 0:
+        buf += b'\0' * (sample_width - remainder)
+    return buf
 
 
 # This generator yields AssistResponse proto messages
@@ -39,25 +70,21 @@ def iter_assist_requests(handler_input: HandlerInput, text_query: str) -> Assist
     model_id = data.GOOGLE_ASSISTANT_API['model_id']
     device_id = util.get_device_id(handler_input)
 
-    # TODO: hardcoded locale?
-    language_code = 'it-IT'
-
-    # TODO: hardcoded default volume?
-    volume = util.get_persistent_attribute(handler_input, 'volume', default=50)
+    locale = getattr(handler_input.request_envelope.request, 'locale', 'en-US')
 
     conversation_state = util.get_session_attribute(handler_input, 'conversation_state')  # type: list
-    conversation_state = bytes(conversation_state) if conversation_state is not None else None
     is_new_conversation = conversation_state is None
+    blob = bytes(conversation_state) if not is_new_conversation else None
 
     config = embedded_assistant_pb2.AssistConfig(
         audio_out_config=embedded_assistant_pb2.AudioOutConfig(
             encoding='LINEAR16',
             sample_rate_hertz=data.DEFAULT_AUDIO_SAMPLE_RATE,
-            volume_percentage=volume,
+            volume_percentage=100,
         ),
         dialog_state_in=embedded_assistant_pb2.DialogStateIn(
-            language_code=language_code,
-            conversation_state=conversation_state,
+            language_code=locale,
+            conversation_state=blob,
             is_new_conversation=is_new_conversation,
         ),
         device_config=embedded_assistant_pb2.DeviceConfig(
@@ -75,6 +102,7 @@ def iter_assist_requests(handler_input: HandlerInput, text_query: str) -> Assist
 def assist(handler_input: HandlerInput, text_query: str) -> Response:
     _logger.info('Input to be processed is: %s', text_query)
 
+    # Get constants
     api_endpoint = data.GOOGLE_ASSISTANT_API['api_endpoint']
     deadline_sec = data.DEFAULT_GRPC_DEADLINE
 
@@ -87,37 +115,31 @@ def assist(handler_input: HandlerInput, text_query: str) -> Response:
     # Create Assistant stub
     assistant = embedded_assistant_pb2_grpc.EmbeddedAssistantStub(grpc_channel)
 
-    # TODO: record Assistant's response
-    # self._fp = open(OUTPUT_AUDIO_FILE, 'wb')
-    # self._wave = wave.open(self._fp, 'wb')
-    # self._wave.setsampwidth(DEFAULT_AUDIO_SAMPLE_WIDTH)
-    # self._wave.setnchannels(1)
-    # self._wave.setframerate(DEFAULT_AUDIO_SAMPLE_RATE)
-
+    # Initial state
     text_response = None
     mic_open = False
 
-    # TODO: hardcoded default volume?
-    volume = util.get_persistent_attribute(handler_input, 'volume', default=50)
+    # Open the response PCM file in which we are going to stream Assistant's response
+    fp = open(data.RESPONSE_PCM_FILE, 'wb')
 
-    # TODO: should refactor this?
+    # Init WAVE file parser
+    wavep = wave.open(fp, 'wb')
+    wavep.setsampwidth(data.DEFAULT_AUDIO_SAMPLE_WIDTH)
+    wavep.setnchannels(1)
+    wavep.setframerate(data.DEFAULT_AUDIO_SAMPLE_RATE)
+
+    # The magic happens
     for resp in assistant.Assist(iter_assist_requests(handler_input, text_query), deadline_sec):
         if len(resp.audio_out.audio_data) > 0:
             _logger.info('Playing assistant response.')
             buf = resp.audio_out.audio_data
-            buf = util.align_buf(buf, data.DEFAULT_AUDIO_SAMPLE_WIDTH)
-            buf = util.normalize_audio_buffer(buf, volume)
-            # TODO: record Assistant's response
-            # self._wave.writeframes(buf)
+            buf = align_buf(buf, data.DEFAULT_AUDIO_SAMPLE_WIDTH)
+            wavep.writeframes(buf)
         if resp.dialog_state_out.conversation_state:
             conversation_state = resp.dialog_state_out.conversation_state
             conversation_state = list(conversation_state) if conversation_state is not None else None
             _logger.debug('Updating conversation state.')
             util.set_session_attribute(handler_input, 'conversation_state', conversation_state)
-        if resp.dialog_state_out.volume_percentage != 0:
-            volume_percentage = resp.dialog_state_out.volume_percentage
-            _logger.info('Setting volume to %s%%', volume_percentage)
-            util.set_persistent_attribute(handler_input, 'volume', volume_percentage, save=True)
         if resp.dialog_state_out.microphone_mode == _DIALOG_FOLLOW_ON:
             mic_open = True
             _logger.info('Expecting follow-on query from user.')
@@ -130,7 +152,32 @@ def assist(handler_input: HandlerInput, text_query: str) -> Response:
     _logger.info('Finished playing assistant response.')
 
     # TODO: info on audio file, error if response is empty
-    # self._wave.close()
-    # self._fp.close()
+    wavep.close()
+    fp.close()
 
-    return handler_input.response_builder.speak(text_response).set_should_end_session(not mic_open).response
+    # Encode Assistant's response in an MP3 we can stream to Alexa
+    encode_from_pcm_to_mp3(data.RESPONSE_PCM_FILE, data.RESPONSE_MP3_FILE)
+
+    # S3 bucket
+    bucket = os.environ['S3_BUCKET']
+    key = util.get_device_id(handler_input)
+
+    # Upload the response MP3 to the bucket
+    _s3.upload_file(data.RESPONSE_MP3_FILE, Bucket=bucket, Key=key)
+
+    # Generate a short-lived signed url to the MP3
+    params = {
+            'Bucket': bucket,
+            'Key': key
+    }
+    url = _s3.generate_presigned_url(ClientMethod='get_object', Params=params, ExpiresIn=10)
+    url = escape(url)
+
+    # Create Alexa response
+    response_builder = handler_input.response_builder
+    response_builder.speak(f'<audio src="{url}"/>')
+    if text_response:
+        response_builder.set_card(SimpleCard(title='Google Assistant', content=text_response))
+    response_builder.set_should_end_session(not mic_open)
+
+    return response_builder.response
