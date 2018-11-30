@@ -27,9 +27,9 @@ def get_credentials(handler_input: HandlerInput) -> Credentials:
 
 
 def get_device_id(handler_input: HandlerInput) -> str:
-    amazon_device_id = handler_input.request_envelope.context.system.device.device_id
+    user_id = handler_input.request_envelope.context.system.user.user_id
     h = hashlib.new('ripemd160')
-    h.update(amazon_device_id.encode('utf-8'))
+    h.update(user_id.encode('utf-8'))
     return h.hexdigest()
 
 
