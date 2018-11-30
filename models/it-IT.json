@@ -1,0 +1,55 @@
+{
+    "interactionModel": {
+      "languageModel": {
+        "invocationName": "google",
+        "intents": [
+          {
+            "name": "AMAZON.CancelIntent",
+            "samples": []
+          },
+          {
+            "name": "AMAZON.HelpIntent",
+            "samples": []
+          },
+          {
+            "name": "AMAZON.StopIntent",
+            "samples": []
+          },
+          {
+            "name": "AMAZON.NavigateHomeIntent",
+            "samples": []
+          },
+          {
+            "name": "SearchIntent",
+            "slots": [
+              {
+                "name": "search",
+                "type": "search"
+              }
+            ],
+            "samples": [
+              "{search}"
+            ]
+          }
+        ],
+        "types": [
+          {
+            "values": [
+              {
+                "name": {
+                  "value": "perché il cielo è blu"
+                }
+              },
+              {
+                "name": {
+                  "value": "chi è la regina"
+                }
+              }
+            ],
+            "name": "search"
+          }
+        ]
+      }
+    }
+  }
+  

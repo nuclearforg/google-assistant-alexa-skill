@@ -1,0 +1,121 @@
+{
+    "manifest": {
+      "publishingInformation": {
+        "locales": {
+          "en-US": {
+            "summary": "Alexa integration with Google Assistant.",
+            "examplePhrases": [
+              "Alexa, open Google",
+              "Alexa, ask Google why the sky is blue",
+              "Alexa, ask Google who is the queen"
+            ],
+            "keywords": [
+              "google",
+              "assistant",
+              "integration"
+            ],
+            "name": "Google Assistant for Alexa",
+            "description": "Alexa integration with Google Assistant.\n\nThis skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted.\n\nTo start, just say \"Alexa, launch Google\" or \"Alexa, open Google\" to start a conversation with Google Assistant\".",
+            "smallIconUri": "https://alexademo.ninja/skills/logo-108.png",
+            "largeIconUri": "https://alexademo.ninja/skills/logo-512.png"
+          },
+          "en-GB": {
+            "summary": "Alexa integration with Google Assistant.",
+            "examplePhrases": [
+              "Alexa, open Google",
+              "Alexa, ask Google why the sky is blue",
+              "Alexa, ask Google who is the queen"
+            ],
+            "keywords": [
+              "google",
+              "assistant",
+              "integration"
+            ],
+            "name": "Google Assistant for Alexa",
+            "description": "Alexa integration with Google Assistant.\n\nThis skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted.\n\nTo start, just say \"Alexa, launch Google\" or \"Alexa, open Google\" to start a conversation with Google Assistant\".",
+            "smallIconUri": "https://alexademo.ninja/skills/logo-108.png",
+            "largeIconUri": "https://alexademo.ninja/skills/logo-512.png"
+          },
+          "en-IN": {
+            "summary": "Alexa integration with Google Assistant.",
+            "examplePhrases": [
+              "Alexa, open Google",
+              "Alexa, ask Google why the sky is blue",
+              "Alexa, ask Google who is the queen"
+            ],
+            "keywords": [
+              "google",
+              "assistant",
+              "integration"
+            ],
+            "name": "Google Assistant for Alexa",
+            "description": "Alexa integration with Google Assistant.\n\nThis skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted.\n\nTo start, just say \"Alexa, launch Google\" or \"Alexa, open Google\" to start a conversation with Google Assistant\".",
+            "smallIconUri": "https://alexademo.ninja/skills/logo-108.png",
+            "largeIconUri": "https://alexademo.ninja/skills/logo-512.png"
+          },
+          "en-CA": {
+            "summary": "Alexa integration with Google Assistant.",
+            "examplePhrases": [
+              "Alexa, open Google",
+              "Alexa, ask Google why the sky is blue",
+              "Alexa, ask Google who is the queen"
+            ],
+            "keywords": [
+              "google",
+              "assistant",
+              "integration"
+            ],
+            "name": "Google Assistant for Alexa",
+            "description": "Alexa integration with Google Assistant.\n\nThis skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted.\n\nTo start, just say \"Alexa, launch Google\" or \"Alexa, open Google\" to start a conversation with Google Assistant\".",
+            "smallIconUri": "https://alexademo.ninja/skills/logo-108.png",
+            "largeIconUri": "https://alexademo.ninja/skills/logo-512.png"
+          },
+          "en-AU": {
+            "summary": "Alexa integration with Google Assistant.",
+            "examplePhrases": [
+              "Alexa, open Google",
+              "Alexa, ask Google why the sky is blue",
+              "Alexa, ask Google who is the queen"
+            ],
+            "keywords": [
+              "google",
+              "assistant",
+              "integration"
+            ],
+            "name": "Google Assistant for Alexa",
+            "description": "Alexa integration with Google Assistant.\n\nThis skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted.\n\nTo start, just say \"Alexa, launch Google\" or \"Alexa, open Google\" to start a conversation with Google Assistant\".",
+            "smallIconUri": "https://alexademo.ninja/skills/logo-108.png",
+            "largeIconUri": "https://alexademo.ninja/skills/logo-512.png"
+          },
+          "it-IT": {
+            "summary": "Collega Assistente Google ad Alexa.",
+            "examplePhrases": [
+              "Alexa, apri Google",
+              "Alexa, chiedi a Google perché il cielo è blu",
+              "Alexa, chiedi a Google che tempo fa oggi"
+            ],
+            "keywords": [
+              "google",
+              "assistente",
+              "integrazione"
+            ],
+            "name": "Assistente Google per Alexa",
+            "description": "Collega Assistente Google ad Alexa.\n\nQuesta skill è esclusivamente ad uso personale e non è approvata da Google. Sebbene la skill usi un'API ufficiale di Google, non supererà mai la certificazione di Amazon per la modalità con cui le risposte sono ospitate sul server.\n\nPer cominciare, di' \"Alexa, apri Google\" o \"Alexa, lancia Google\" per cominciare una conversazione con Assistente Google\".",
+            "smallIconUri": "https://alexademo.ninja/skills/logo-108.png",
+            "largeIconUri": "https://alexademo.ninja/skills/logo-512.png"
+          }
+        },
+        "isAvailableWorldwide": true
+      },
+      "apis": {
+        "custom": {
+          "endpoint": {
+            "sourceDir": "lambda/py"
+          },
+          "interfaces": []
+        }
+      },
+      "manifestVersion": "1.0",
+      "permissions": []
+    }
+  }
