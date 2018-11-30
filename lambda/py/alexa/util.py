@@ -56,6 +56,6 @@ def get_session_attribute(handler_input: HandlerInput, key: str, default: object
 
 
 def set_session_attribute(handler_input: HandlerInput, key: str, value: object) -> None:
-    attr = handler_input.attributes_manager.persistent_attributes
+    attr = handler_input.attributes_manager.session_attributes
     attr[key] = value
     handler_input.attributes_manager.session_attributes = attr
