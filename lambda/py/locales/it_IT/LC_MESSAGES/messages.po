@@ -1,0 +1,63 @@
+# Italian (Italy) translations for "Google Assistant for Alexa".
+# Copyright (C) 2018 Francesco Circhetta
+# This file is distributed under the same license as the "Google Assistant
+# for Alexa" project.
+# Francesco Circhetta francesco dot circhetta at gmail dot com, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-11-30 22:41+0100\n"
+"PO-Revision-Date: 2018-11-30 22:43+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: it_IT\n"
+"Language-Team: it_IT <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: alexa/data.py:7
+msgid "Something went wrong, try again later!!"
+msgstr "Qualcosa è andato storto, riprova più tardi!!"
+
+#: alexa/data.py:8
+msgid ""
+"There was an error registering the Instance with the Google API. The "
+"first time that you run the skill, make sure that you are logged into the"
+" same Google account that created the API"
+msgstr ""
+"Si è verificato un errore nel tentativo di registrare l'istanza con l'API di "
+"Google. La prima volta che lanci la skill, assicurati di essere loggato con "
+"lo stesso account Google che ha creato l'API."
+
+#: alexa/data.py:10
+msgid ""
+"REPEAT AFTER ME Welcome to the unofficial Google Assistant skill for the "
+"Amazon Echo. For other languages and local search results, please open "
+"the Google Assistant app on your phone and complete the language and "
+"address settings."
+msgstr ""
+"RIPETI DOPO DI ME Benvenuto nella skill non ufficiale di Google Assistant "
+"per Amazon Echo. Per cambiare lingua e avere risultati di ricerca "
+"personalizzati, apri per favore l'app di Assistente Google sul tuo smartphone"
+" e completa le impostazioni di lingua e indirizzo."
+
+#: alexa/data.py:13
+msgid ""
+"You must link your Google account to use this skill. Please use the link "
+"in the Alexa app to authorise your Google Account."
+msgstr ""
+"Devi collegare il tuo account Google per usare la skill. Per favore, usa il "
+"link nell'app Alexa per autorizzare il tuo account Google."
+
+#: alexa/data.py:15
+msgid "I'm sorry, I don't understand that question!!"
+msgstr "Scusa, non ho capito!!"
+
+#: alexa/data.py:17
+msgid "Hello"
+msgstr "Ciao"
+

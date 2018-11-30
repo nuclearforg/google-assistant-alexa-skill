@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Unofficial Google Assistant skill for the Amazon Echo."""
+import gettext
 import logging
 from functools import wraps
 from typing import Callable
@@ -42,7 +43,8 @@ def preflight_check(f: Callable) -> Callable:
                 register_device(project_id, credentials, model_id, device_id)
             except RegistrationError as e:
                 _logger.error('Error in device registration: %s', e)
-                handler_input.response_builder.speak(data.ERROR_REGISTRATION)
+                _: Callable = handler_input.attributes_manager.request_attributes["_"]
+                handler_input.response_builder.speak(_(data.ERROR_REGISTRATION))
                 return handler_input.response_builder.response
 
             _logger.info('Device was registered successfully')
@@ -60,8 +62,9 @@ def preflight_check(f: Callable) -> Callable:
 def launch_request_handler(handler_input: HandlerInput) -> Response:
     """Handler for Skill Launch."""
     _logger.info('LaunchRequest')
+    _: Callable = handler_input.attributes_manager.request_attributes["_"]
 
-    return google_assistant.assist(handler_input, data.HELLO)
+    return google_assistant.assist(handler_input, _(data.HELLO))
 
 
 @_sb.request_handler(can_handle_func=is_intent_name("SearchIntent"))
@@ -85,7 +88,8 @@ def session_ended_request_handler(handler_input: HandlerInput) -> Response:
 def unhandled_intent_handler(handler_input: HandlerInput) -> Response:
     """Handler for all other unhandled requests."""
     _logger.debug(handler_input.request_envelope.request)
-    handler_input.response_builder.speak(data.FALLBACK)
+    _: Callable = handler_input.attributes_manager.request_attributes["_"]
+    handler_input.response_builder.speak(_(data.FALLBACK))
     return handler_input.response_builder.response
 
 
@@ -95,14 +99,35 @@ def all_exception_handler(handler_input: HandlerInput, exception: Exception) -> 
     respond with custom message.
     """
     _logger.error(exception, exc_info=True)
-    handler_input.response_builder.speak(data.ERROR_GENERIC)
+    _: Callable = handler_input.attributes_manager.request_attributes["_"]
+    handler_input.response_builder.speak(_(data.ERROR_GENERIC))
     return handler_input.response_builder.response
 
 
-@_sb.global_response_interceptor()
-def log_response(_: HandlerInput, response: Response) -> None:
-    """Response logger."""
-    _logger.info("Response: {}".format(response))
+@_sb.global_request_interceptor()
+def process(handler_input: HandlerInput) -> None:
+    """Process the locale in request and load localized strings for response.
+    This interceptors processes the locale in request, and loads the locale
+    specific localization strings for the function `_`, that is used during
+    responses.
+    """
+    locale = getattr(handler_input.request_envelope.request, 'locale', None)
+    _logger.info("Locale is {}".format(locale))
+    if locale:
+        if locale.startswith("fr"):
+            locale_file_name = "fr-FR"
+        elif locale.startswith("it"):
+            locale_file_name = "it-IT"
+        elif locale.startswith("es"):
+            locale_file_name = "es-ES"
+        else:
+            locale_file_name = locale
+
+        _logger.info("Loading locale file: {}".format(locale_file_name))
+        i18n = gettext.translation('data', localedir='locales', languages=[locale_file_name], fallback=True)
+        handler_input.attributes_manager.request_attributes["_"] = i18n.gettext
+    else:
+        handler_input.attributes_manager.request_attributes["_"] = gettext.gettext
 
 
 _logger.info('Loading Alexa Assistant...')

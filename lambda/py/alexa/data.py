@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
-# Resolving gettext as _ for module loading.
-# TODO: from gettext import gettext as _
+from gettext import gettext as _
 
 
 SKILL_NAME = 'Alexa Assistant'
 
-ERROR_GENERIC = ('Qualcosa è andato storto, riprova più tardi!!')
-ERROR_REGISTRATION = ('Si è verificato un errore con la registrazione del dispositivo. Riprova più tardi!!')
-FIRST_RUN = ('RIPETI DOPO DI ME Benvenuto nella skill non ufficiale di Assistente Google per Amazon Echo. Per '
-              'modificare le impostazioni, apri l\'app di Assistente Google sul tuo smartphone.')
-LINK_ACCOUNT = ('Per usare questa skill devi collegare il tuo account Google. Usa l\'app Alexa per collegare '
-                 'il tuo account Amazon con il tuo account Google.')
-FALLBACK = ('Scusa, non ho capito!!')
+ERROR_GENERIC = _('Something went wrong, try again later!!')
+ERROR_REGISTRATION = _('There was an error registering the Instance with the Google API. The first time that you run '
+                       'the skill, make sure that you are logged into the same Google account that created the API')
+FIRST_RUN = _('REPEAT AFTER ME Welcome to the unofficial Google Assistant skill for the Amazon Echo. For other '
+              'languages and local search results, please open the Google Assistant app on your phone and '
+              'complete the language and address settings.')
+LINK_ACCOUNT = _('You must link your Google account to use this skill. Please use the link in the Alexa app to '
+                 'authorise your Google Account.')
+FALLBACK = _('I\'m sorry, I don\'t understand that question!!')
 
-HELLO = ('Hello')
+HELLO = _('Hello')
 
 GOOGLE_ASSISTANT_API = {
     'api_endpoint': 'embeddedassistant.googleapis.com',
