@@ -1,0 +1,7 @@
+ask-sdk
+ask-sdk-core
+ask-sdk-model
+boto3
+google-assistant-grpc
+google-auth
+tenacity
