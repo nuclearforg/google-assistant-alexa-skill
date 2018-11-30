@@ -1,4 +1,5 @@
-> :heavy_exclamation_mark: This skill is for personal use only and is not endorsed by Google. Whilst this skill uses an official Google API, it will never pass Amazon certification due to how the responses are hosted. (See [here][1])
+> :heavy_exclamation_mark: This skill is for personal use only and is not endorsed by Google. Whilst this skill uses an
+official Google API, it will never pass Amazon certification due to how the responses are hosted. (See [here][1])
 
 # Alexa integration with Google Assistant
 
@@ -9,20 +10,24 @@
 
 ![Logo][logo-img]
 
-## THIS IS A WIP: STAY TUNED
+This skill provides you full Google Assistant functionality through your Alexa enabled devices as if you were speaking
+to a Google Home. The only problem is that you'll end up really annoyed by constantly repeating *Alexa, ask Google
+(...)* and buy a real Google Home :stuck_out_tongue_winking_eye:.
 
 ## Credits
 
-- Original Node.js implementation of the [alexa-assistant][2] skill for Alexa, by [@tartanguru][3].
+-  Original Node.js implementation of the [alexa-assistant][2] skill for Alexa, by [@tartanguru][3].
+-  [Audio Player][4] project from the Alexa Skill Kit Python SDK.
 
 ---
 This project is distributed under the terms of the Apache License v2.0.
-See file [`LICENSE`][4] for further reference.
+See file [`LICENSE`][5] for further reference.
 
  [1]: https://github.com/tartanguru/alexa-assistant/blob/master/readme.md
  [2]: https://github.com/tartanguru/alexa-assistant
  [3]: https://github.com/tartanguru
- [4]: https://github.com/circhioz/google-assistant-alexa-skill/blob/master/LICENSE
+ [4]: https://github.com/alexa/skill-sample-python-audio-player
+ [5]: https://github.com/circhioz/google-assistant-alexa-skill/blob/master/LICENSE
 
  [logo-img]: https://raw.githubusercontent.com/circhioz/google-assistant-alexa-skill/assets/logo.png
  [license-link]: https://opensource.org/licenses/Apache-2.0
